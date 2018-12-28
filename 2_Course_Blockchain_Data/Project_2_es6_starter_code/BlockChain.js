@@ -37,7 +37,7 @@ class Blockchain {
         let self = this;
         return new Promise(function(resolve, reject) {
           self.db.getBlocksCount().then((result) => {
-              resolve(result);
+              resolve(result-1);
           })
           .catch(function(err){
               reject(err);
@@ -135,17 +135,22 @@ class Blockchain {
             self.db.getBlocksCount().then((height) => {
                 // loop through each block from block one used to compare pervious hash
                 for (var a = 0; a < height; a++) {
-                    // console.log("var a is " + a); //debugging purposes
-                    if (!self.validateBlock(a)) {
-                        errorlog.push(height);
-                        console.log('Block errors detected at' +height);
-                    }
+                    console.log("var a is " + a); //debugging purposes
+                    self.validateBlock(a).then((valid) => {
+                        if (!valid) {
+                            errorlog.push(a);
+                            console.log('Block errors detected at' + a);
+                        }
+                    })
+                    .catch(function(err) {
+                        reject(err);
+                    })           
                 }
                 resolve(errorlog);    
             })
             .catch(function(err) {
               reject(err);
-            })
+            });
         });
     }
 
@@ -156,7 +161,7 @@ class Blockchain {
         console.log("block is " + JSON.stringify(block).toString());
         let self = this;
         return new Promise( (resolve, reject) => {
-            self.bd.addLevelDBData(height, JSON.stringify(block).toString()).then((blockModified) => {
+            self.db.addLevelDBData(height, JSON.stringify(block).toString()).then((blockModified) => {
                 console.log(blockModified);
                 resolve(blockModified);
             }).catch((err) => { console.log(err); reject(err)});
