@@ -67,12 +67,15 @@ myBlockChain.validateBlock(10).then((valid) => {
 */
 
 /** Tampering a Block this is only for the purpose of testing the validation methods */
-
+/*
 myBlockChain.getBlock(5).then((block) => {
 	let blockAux = block;
 	blockAux.body = "Tampered Block";
-	//console.log(JSON.stringify(block));
-	myBlockChain._modifyBlock(blockAux.height, blockAux).then((blockModified) => {
+	console.log("blockAux is " + JSON.stringify(blockAux));
+	console.log("blockAux body is " + JSON.parse(blockAux).body);
+	console.log("blockAux height is " + JSON.parse(blockAux).height);
+
+	myBlockChain._modifyBlock(JSON.parse(blockAux).height, block).then((blockModified) => {
 		if(blockModified){
 			myBlockChain.validateBlock(blockAux.height).then((valid) => {
 				console.log(`Block #${blockAux.height}, is valid? = ${valid}`);
@@ -86,6 +89,7 @@ myBlockChain.getBlock(5).then((block) => {
 	}).catch((err) => { console.log(err);});
 }).catch((err) => { console.log(err);});
 
+/*
 myBlockChain.getBlock(6).then((block) => {
 	let blockAux = block;
 	blockAux.previousBlockHash = "jndininuud94j9i3j49dij9ijij39idj9oi";

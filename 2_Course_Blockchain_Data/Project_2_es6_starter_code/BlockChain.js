@@ -152,6 +152,8 @@ class Blockchain {
     // Utility Method to Tamper a Block for Test Validation
     // This method is for testing purpose
     _modifyBlock(height, block) {
+        console.log("height is " + height);
+        console.log("block is " + JSON.stringify(block).toString());
         let self = this;
         return new Promise( (resolve, reject) => {
             self.bd.addLevelDBData(height, JSON.stringify(block).toString()).then((blockModified) => {
