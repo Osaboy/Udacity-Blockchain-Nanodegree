@@ -52,15 +52,13 @@ class LevelSandbox {
         let self = this; // because we are returning a promise we will need this to be able to reference 'this' inside the Promise constructor
         let i = 0;
         return new Promise(function(resolve, reject) {
-            self.db.createReadStream()
-            .on('data', function(data) {
+            self.db.createReadStream().on('data', function(data) {
                 i++;
-            })
-            .on('error', function(err) {
+            }).on('error', function(err) {
                 reject(err)
-            })
-            .on('close', function() {
+            }).on('close', function() {
                 self.addLevelDBData(i, value);
+                console.log('Block #' + i);
                 resolve(true)
             });   
         });
@@ -72,17 +70,14 @@ class LevelSandbox {
         var count_keys = 0; // this variable tracks the block height i.e how many keys
         
         return new Promise(function(resolve, reject) {
-            self.createReadStream()
-            .on('data', function (key) {
+            self.db.createReadStream().on('data', function (key) {
               // Count each object inserted
               count_keys++;
-            })
-            .on('error', function (err) {
+            }).on('error', function (err) {
                 // reject with error
                 console.log('No blocks found', err);
                 reject();
-            })
-            .on('close', function () {
+            }).on('close', function () {
                 //resolve with the count value
                 resolve(count_keys);
             });
@@ -95,14 +90,11 @@ class LevelSandbox {
         let dataArray = [];
         
         return new Promise(function(resolve, reject){
-            self.db.createKeyStream()
-            .on('data', function (data) {
+            self.db.createKeyStream().on('data', function (data) {
                 dataArray.push(data);
-            })
-            .on('error', function (err) {
+            }).on('error', function (err) {
                 reject(err)
-            })
-            .on('close', function () {
+            }).on('close', function () {
                 resolve(dataArray);
             });
         });
