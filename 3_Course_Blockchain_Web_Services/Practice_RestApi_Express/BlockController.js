@@ -24,6 +24,9 @@ class BlockController {
     getBlockByIndex() {
         this.app.get("/api/block/:index", (req, res) => {
             // Add your code here
+            let index = req.params.index;
+            res.send('Block at index ' + index + " is " + JSON.stringify(this.blocks[index]).toString());
+            //res.send('Genesis block is ' +  JSON.stringify(this.blocks[0]).toString());
         });
     }
 
@@ -33,6 +36,7 @@ class BlockController {
     postNewBlock() {
         this.app.post("/api/block", (req, res) => {
             // Add your code here
+            res.send('posting new block');
         });
     }
 
